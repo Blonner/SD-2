@@ -1,16 +1,31 @@
 #pragma once
-#ifndef SORTED_ARRAY_PRIORITY_QUEUE_HPP
-#define SORTED_ARRAY_PRIORITY_QUEUE_HPP
+#ifndef MAX_HEAP_PRIORITY_QUEUE_HPP
+#define MAX_HEAP_PRIORITY_QUEUE_HPP
 
 #include "element.hpp"
 #include <iostream>
 
-class SortedArrayPriorityQueue {
+class MaxHeapPriorityQueue {
 private:
-    Element* array;     // tablica elementow
+    Element* heap;      // tablica kopca
     int capacity;       // pojemnosc
     int size;           // liczba elementow
     int insertCounter;  // licznik wstawien
+
+    // indeks rodzica
+    int parent(int i) { return (i - 1) / 2; }
+
+    // indeks lewego dziecka
+    int leftChild(int i) { return 2 * i + 1; }
+
+    // indeks prawego dziecka
+    int rightChild(int i) { return 2 * i + 2; }
+
+    // naprawa kopca w gore
+    void heapifyUp(int i);
+
+    // naprawa kopca w dol
+    void heapifyDown(int i);
 
     // zwiekszenie pojemnosci
     void resize();
@@ -20,10 +35,10 @@ private:
 
 public:
     // konstruktor
-    SortedArrayPriorityQueue(int initialCapacity = 10);
+    MaxHeapPriorityQueue(int initialCapacity = 10);
 
     // destruktor
-    ~SortedArrayPriorityQueue();
+    ~MaxHeapPriorityQueue();
 
     // dodawanie elementu
     void insert(int element, int priority);
@@ -47,4 +62,4 @@ public:
     bool isEmpty() { return size == 0; }
 };
 
-#endif // SORTED_ARRAY_PRIORITY_QUEUE_HPP
+#endif // MAX_HEAP_PRIORITY_QUEUE_HPP
