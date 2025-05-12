@@ -7,43 +7,43 @@
 
 class SortedArrayPriorityQueue {
 private:
-    Element* array;     // tablica elementow
-    int capacity;       // max rozmiar
-    int size;           // aktualny rozmiar
-    int insertCounter;  // licznik dla FIFO
+    Element* array;     // Tablica elementow
+    int capacity;       // Pojemnosc tablicy
+    int size;           // Liczba elementow
+    int insertCounter;  // Licznik wstawien (FIFO)
 
-    // powiekszenie tablicy
+    // Zwiekszenie pojemnosci
     void resize();
 
-    // znajdowanie elementu
+    // Szukanie indeksu elementu
     int findIndex(int value);
 
 public:
-    // inicjalizacja
+    // Konstruktor
     SortedArrayPriorityQueue(int initialCapacity = 10);
 
-    // czyszczenie pamieci
+    // Destruktor
     ~SortedArrayPriorityQueue();
 
-    // dodanie elementu
+    // Dodawanie elementu
     void insert(int element, int priority);
 
-    // pobranie i usuniecie max
+    // Usuwanie maksimum
     Element extractMax();
 
-    // podglad max
+    // Podglad maksimum
     Element findMax();
 
-    // zmiana priorytetu
+    // Zmiana priorytetu
     bool modifyKey(int element, int newPriority);
 
-    // pobranie rozmiaru
+    // Aktualny rozmiar
     int returnSize() { return size; }
 
-    // wypisanie elementow
+    // Wyswietlanie zawartosci
     void display();
 
-    // sprawdzenie czy pusta
+    // Sprawdzenie czy pusta
     bool isEmpty() { return size == 0; }
 };
 

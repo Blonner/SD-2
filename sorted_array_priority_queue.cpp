@@ -3,58 +3,60 @@
 
 using namespace std;
 
-// inicjalizacja
+// Konstruktor
 SortedArrayPriorityQueue::SortedArrayPriorityQueue(int initialCapacity) {
+    // Inicjalizacja z pojemnoscia
     capacity = initialCapacity;
     array = new Element[capacity];
     size = 0;
     insertCounter = 0;
 }
 
-// czyszczenie pamieci
+// Destruktor
 SortedArrayPriorityQueue::~SortedArrayPriorityQueue() {
+    // Zwolnienie pamieci
     delete[] array;
 }
 
-// powiekszenie tablicy
+// Zwiekszenie pojemnosci
 void SortedArrayPriorityQueue::resize() {
-    // nowy rozmiar x2
+    // Podwojenie pojemnosci
     int newCapacity = capacity * 2;
     Element* newArray = new Element[newCapacity];
 
-    // kopiowanie danych
+    // Kopiowanie elementow
     for (int i = 0; i < size; i++) {
         newArray[i] = array[i];
     }
 
-    // zwolnienie starej pamieci
+    // Aktualizacja wskaznikow
     delete[] array;
     array = newArray;
     capacity = newCapacity;
 }
 
-// znajdowanie elementu
+// Szukanie indeksu elementu
 int SortedArrayPriorityQueue::findIndex(int value) {
-    // przeszukanie liniowe
+    // Liniowe przeszukiwanie
     for (int i = 0; i < size; i++) {
         if (array[i].value == value) {
             return i;
         }
     }
-    return -1; // brak elementu
+    return -1; // Nie znaleziono
 }
 
-// dodanie elementu
+// Dodawanie elementu
 void SortedArrayPriorityQueue::insert(int element, int priority) {
-    // sprawdzenie miejsca
+    // Sprawdzenie pojemnosci
     if (size == capacity) {
         resize();
     }
 
-    // zwiekszenie licznika
+    // Zwiekszenie licznika
     insertCounter++;
 
-    // znalezienie pozycji
+    // Znalezienie pozycji
     int i = size - 1;
     while (i >= 0 && (array[i].priority < priority ||
         (array[i].priority == priority && array[i].insertTime > insertCounter))) {
@@ -62,66 +64,66 @@ void SortedArrayPriorityQueue::insert(int element, int priority) {
         i--;
     }
 
-    // wstawienie elementu
+    // Wstawienie elementu
     array[i + 1] = Element(element, priority, insertCounter);
     size++;
 }
 
-// pobranie i usuniecie max
+// Usuwanie maksimum
 Element SortedArrayPriorityQueue::extractMax() {
     if (size <= 0) {
-        // brak elementow
-        cerr << "Blad: Pusta kolejka" << endl;
+        // Kolejka pusta
+        cerr << "Blad: Kolejka jest pusta" << endl;
         return Element();
     }
 
-    // zapisanie max elementu
+    // Maksimum na poczatku
     Element maxElement = array[0];
 
-    // przesuniecie elementow
+    // Przesuniecie elementow
     for (int i = 0; i < size - 1; i++) {
         array[i] = array[i + 1];
     }
 
-    // zmniejszenie rozmiaru
+    // Zmniejszenie rozmiaru
     size--;
 
     return maxElement;
 }
 
-// podglad max
+// Podglad maksimum
 Element SortedArrayPriorityQueue::findMax() {
     if (size <= 0) {
-        // brak elementow
-        cerr << "Blad: Pusta kolejka" << endl;
+        // Kolejka pusta
+        cerr << "Blad: Kolejka jest pusta" << endl;
         return Element();
     }
 
-    // max na poczatku
+    // Maksimum na poczatku
     return array[0];
 }
 
-// zmiana priorytetu
+// Zmiana priorytetu
 bool SortedArrayPriorityQueue::modifyKey(int element, int newPriority) {
-    // szukanie elementu
+    // Szukanie elementu
     int i = findIndex(element);
 
     if (i == -1) {
-        // nie znaleziono
+        // Element nie znaleziony
         return false;
     }
 
-    // zapisanie elementu
+    // Zapisanie elementu z nowym priorytetem
     Element updatedElement = array[i];
     updatedElement.priority = newPriority;
 
-    // usuniecie z obecnej pozycji
+    // Usuniecie z obecnej pozycji
     for (int j = i; j < size - 1; j++) {
         array[j] = array[j + 1];
     }
     size--;
 
-    // wstawienie z nowym priorytetem
+    // Wstawienie z nowym priorytetem
     int j = size - 1;
     while (j >= 0 && (array[j].priority < newPriority ||
         (array[j].priority == newPriority && array[j].insertTime > updatedElement.insertTime))) {
@@ -129,16 +131,16 @@ bool SortedArrayPriorityQueue::modifyKey(int element, int newPriority) {
         j--;
     }
 
-    // wstawienie zaktualizowanego elementu
+    // Wstawienie zaktualizowanego elementu
     array[j + 1] = updatedElement;
     size++;
 
     return true;
 }
 
-// wypisanie elementow
+// Wyswietlanie zawartosci
 void SortedArrayPriorityQueue::display() {
-    cout << "Kolejka (wartosc, priorytet):" << endl;
+    cout << "Zawartosc kolejki (wartosc, priorytet):" << endl;
     for (int i = 0; i < size; i++) {
         cout << "(" << array[i].value << ", " << array[i].priority << ") ";
     }

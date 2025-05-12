@@ -2,16 +2,14 @@
 #ifndef ELEMENT_HPP
 #define ELEMENT_HPP
 
-// struktura elementu
+// Struktura elementu z priorytetem
 struct Element {
-    int value;      // wartosc elementu
-    int priority;   // priorytet
-    int insertTime; // czas dodania - dla FIFO
+    int value;      // Wartosc elementu
+    int priority;   // Priorytet elementu
+    int insertTime; // Czas wstawienia (dla rozwiazywania konfliktow)
 
-    // konstruktor domyslny
     Element() : value(0), priority(0), insertTime(0) {}
 
-    // konstruktor z parametrami
     Element(int val, int prio, int time) : value(val), priority(prio), insertTime(time) {}
 };
 

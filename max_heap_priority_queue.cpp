@@ -3,161 +3,164 @@
 
 using namespace std;
 
-// inicjalizacja
+// Konstruktor
 MaxHeapPriorityQueue::MaxHeapPriorityQueue(int initialCapacity) {
+    // Inicjalizacja z pojemnoscia
     capacity = initialCapacity;
     heap = new Element[capacity];
     size = 0;
     insertCounter = 0;
 }
 
-// czyszczenie pamieci
+// Destruktor
 MaxHeapPriorityQueue::~MaxHeapPriorityQueue() {
+    // Zwolnienie pamieci
     delete[] heap;
 }
 
-// przywracanie wlasnosci kopca w gore
+// Naprawa kopca w gore
 void MaxHeapPriorityQueue::heapifyUp(int i) {
+    // Przesuwanie w gore
     while (i > 0) {
         int p = parent(i);
 
-        // warunek stopu - priorytet mniejszy
+        // Jesli priorytet mniejszy, koniec
         if (heap[i].priority < heap[p].priority) {
             break;
         }
 
-        // warunek stopu - rowne priorytety, FIFO
+        // Jesli priorytety rowne, sprawdz czas
         if (heap[i].priority == heap[p].priority && heap[i].insertTime > heap[p].insertTime) {
             break;
         }
 
-        // zamiana elementow
+        // Zamiana elementow
         swap(heap[i], heap[p]);
         i = p;
     }
 }
 
-// przywracanie wlasnosci kopca w dol
+// Naprawa kopca w dol
 void MaxHeapPriorityQueue::heapifyDown(int i) {
     int maxIndex = i;
     int l = leftChild(i);
     int r = rightChild(i);
 
-    // sprawdzenie lewego dziecka
+    // Sprawdz lewe dziecko
     if (l < size && (heap[l].priority > heap[maxIndex].priority ||
         (heap[l].priority == heap[maxIndex].priority &&
             heap[l].insertTime < heap[maxIndex].insertTime))) {
         maxIndex = l;
     }
 
-    // sprawdzenie prawego dziecka
+    // Sprawdz prawe dziecko
     if (r < size && (heap[r].priority > heap[maxIndex].priority ||
         (heap[r].priority == heap[maxIndex].priority &&
             heap[r].insertTime < heap[maxIndex].insertTime))) {
         maxIndex = r;
     }
 
-    // zamiana jesli potrzebna
+    // Jesli znaleziono wiekszy, zamien i kontynuuj
     if (i != maxIndex) {
         swap(heap[i], heap[maxIndex]);
         heapifyDown(maxIndex);
     }
 }
 
-// powiekszenie tablicy
+// Zwiekszenie pojemnosci
 void MaxHeapPriorityQueue::resize() {
-    // nowy rozmiar x2
+    // Podwojenie pojemnosci
     int newCapacity = capacity * 2;
     Element* newHeap = new Element[newCapacity];
 
-    // kopiowanie danych
+    // Kopiowanie elementow
     for (int i = 0; i < size; i++) {
         newHeap[i] = heap[i];
     }
 
-    // zwolnienie starej pamieci
+    // Aktualizacja wskaznikow
     delete[] heap;
     heap = newHeap;
     capacity = newCapacity;
 }
 
-// znajdowanie elementu
+// Szukanie indeksu elementu
 int MaxHeapPriorityQueue::findIndex(int value) {
-    // przeszukanie liniowe
+    // Liniowe przeszukiwanie
     for (int i = 0; i < size; i++) {
         if (heap[i].value == value) {
             return i;
         }
     }
-    return -1; // brak elementu
+    return -1; // Nie znaleziono
 }
 
-// dodanie elementu
+// Dodawanie elementu
 void MaxHeapPriorityQueue::insert(int element, int priority) {
-    // sprawdzenie miejsca
+    // Sprawdzenie pojemnosci
     if (size == capacity) {
         resize();
     }
 
-    // dodanie na koniec
+    // Dodanie na koniec
     insertCounter++;
     heap[size] = Element(element, priority, insertCounter);
 
-    // naprawa kopca
+    // Naprawa kopca
     heapifyUp(size);
     size++;
 }
 
-// pobranie i usuniecie max
+// Usuwanie maksimum
 Element MaxHeapPriorityQueue::extractMax() {
     if (size <= 0) {
-        // brak elementow
-        cerr << "Blad: Pusta kolejka" << endl;
+        // Kolejka pusta
+        cerr << "Blad: Kolejka jest pusta" << endl;
         return Element();
     }
 
-    // zapisanie max elementu
+    // Zapisanie maksimum
     Element maxElement = heap[0];
 
-    // przeniesienie ostatniego na poczatek
+    // Ostatni na poczatek
     heap[0] = heap[size - 1];
     size--;
 
-    // naprawa kopca
+    // Naprawa kopca
     heapifyDown(0);
 
     return maxElement;
 }
 
-// podglad max
+// Podglad maksimum
 Element MaxHeapPriorityQueue::findMax() {
     if (size <= 0) {
-        // brak elementow
-        cerr << "Blad: Pusta kolejka" << endl;
+        // Kolejka pusta
+        cerr << "Blad: Kolejka jest pusta" << endl;
         return Element();
     }
 
-    // max na poczatku
+    // Maksimum na poczatku
     return heap[0];
 }
 
-// zmiana priorytetu
+// Zmiana priorytetu
 bool MaxHeapPriorityQueue::modifyKey(int element, int newPriority) {
-    // szukanie elementu
+    // Szukanie elementu
     int i = findIndex(element);
 
     if (i == -1) {
-        // nie znaleziono
+        // Element nie znaleziony
         return false;
     }
 
-    // zapisanie starego priorytetu
+    // Zapisanie starego priorytetu
     int oldPriority = heap[i].priority;
 
-    // aktualizacja
+    // Aktualizacja priorytetu
     heap[i].priority = newPriority;
 
-    // naprawa kopca
+    // Naprawa kopca
     if (newPriority > oldPriority) {
         heapifyUp(i);
     }
@@ -168,9 +171,9 @@ bool MaxHeapPriorityQueue::modifyKey(int element, int newPriority) {
     return true;
 }
 
-// wypisanie elementow
+// Wyswietlanie zawartosci
 void MaxHeapPriorityQueue::display() {
-    cout << "Kolejka (wartosc, priorytet):" << endl;
+    cout << "Zawartosc kolejki (wartosc, priorytet):" << endl;
     for (int i = 0; i < size; i++) {
         cout << "(" << heap[i].value << ", " << heap[i].priority << ") ";
     }
