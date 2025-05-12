@@ -8,9 +8,9 @@
 class MaxHeapPriorityQueue {
 private:
     Element* heap;      // tablica kopca
-    int capacity;       // pojemnosc
-    int size;           // liczba elementow
-    int insertCounter;  // licznik wstawien
+    int capacity;       // max rozmiar
+    int size;           // aktualny rozmiar
+    int insertCounter;  // licznik dla FIFO
 
     // indeks rodzica
     int parent(int i) { return (i - 1) / 2; }
@@ -21,44 +21,44 @@ private:
     // indeks prawego dziecka
     int rightChild(int i) { return 2 * i + 2; }
 
-    // naprawa kopca w gore
+    // przywracanie wlasnosci kopca w gore
     void heapifyUp(int i);
 
-    // naprawa kopca w dol
+    // przywracanie wlasnosci kopca w dol
     void heapifyDown(int i);
 
-    // zwiekszenie pojemnosci
+    // powiekszenie tablicy
     void resize();
 
-    // szukanie indeksu elementu
+    // znajdowanie elementu
     int findIndex(int value);
 
 public:
-    // konstruktor
+    // inicjalizacja
     MaxHeapPriorityQueue(int initialCapacity = 10);
 
-    // destruktor
+    // czyszczenie pamieci
     ~MaxHeapPriorityQueue();
 
-    // dodawanie elementu
+    // dodanie elementu
     void insert(int element, int priority);
 
-    // usuwanie max elementu
+    // pobranie i usuniecie max
     Element extractMax();
 
-    // podglad max elementu
+    // podglad max
     Element findMax();
 
     // zmiana priorytetu
     bool modifyKey(int element, int newPriority);
 
-    // rozmiar kolejki
+    // pobranie rozmiaru
     int returnSize() { return size; }
 
-    // wyswietlanie
+    // wypisanie elementow
     void display();
 
-    // czy pusta
+    // sprawdzenie czy pusta
     bool isEmpty() { return size == 0; }
 };
 

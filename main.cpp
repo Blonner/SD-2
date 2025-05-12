@@ -6,41 +6,50 @@
 
 using namespace std;
 
-// losowa liczba z zakresu
+// losowa liczba
 int randomInt(int min, int max) {
     return min + rand() % (max - min + 1);
 }
 
-// menu glowne
+// test wydajnosci - deklaracja
+void testPerformance() {
+    cout << "Test wydajnosci" << endl;
+}
+
+// menu
 void mainMenu() {
     int choice;
     bool exit = false;
 
     while (!exit) {
-        cout << "\n=== MENU GLOWNE ===" << endl;
-        cout << "1. Test podstawowy" << endl;
+        cout << "\n=== MENU ===" << endl;
+        cout << "1. Test wydajnosci" << endl;
         cout << "0. Wyjscie" << endl;
-        cout << "Wybierz opcje: ";
+        cout << "Wybierz: ";
         cin >> choice;
 
         switch (choice) {
         case 1:
-            cout << "Test podstawowy - nie zaimplementowany" << endl;
+            testPerformance();
             break;
         case 0:
             exit = true;
             break;
         default:
-            cout << "Nieprawidlowa opcja. Sprobuj ponownie." << endl;
+            cout << "Bledna opcja. Sprobuj ponownie." << endl;
         }
     }
 }
 
 int main() {
+    // inicjalizacja generatora
+    srand(time(nullptr));
+
     cout << "=== KOLEJKI PRIORYTETOWE MAX ===" << endl;
     cout << "1. Kopiec binarny" << endl;
     cout << "2. Tablica posortowana" << endl;
 
+    // uruchomienie menu
     mainMenu();
 
     return 0;
