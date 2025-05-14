@@ -17,7 +17,7 @@ int randomInt(int min, int max) {
 // Testowanie wydajnosci operacji
 void testPerformance() {
     // Rozmiary struktur do testowania
-    const int sizes[] = { 5000, 8000, 10000, 16000, 20000, 40000, 60000, 100000 };
+    const int sizes[] = { 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 150000, 200000 };
     const int numSizes = sizeof(sizes) / sizeof(sizes[0]);
 
     // Liczba powtorzen dla kazdego rozmiaru
